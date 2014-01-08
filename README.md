@@ -70,3 +70,48 @@ Artık bunu bir form içinde kullanıp elemanları oluşturabiliriz.
 Bilgileri post ettirdiğimizde ise belirlediğimiz dosyaya dizi olarak kayıt ettirelim.
 
 ```
+<?php
+    if ( isset($_POST['submit']) ){
+        $form->update();
+        header('Location:index.php');
+    }
+?>
+```
+
+Evet artık oluşan dosyada bir diziniz ve kullanabileceğiniz elemanlar mevcut. Bunlara herhangi bir dosyada require ederek kolayca erişebilirsiniz. Örneğin;
+
+```
+require 'ayarlar.php';
+print_r($ayarlar);
+```
+
+Ya da sınıf içindeki getConf metodunu kullanarakta name'e göre değerlerini alabilirsiniz.
+
+```
+print $form->getConf('eposta');
+```
+
+Form tasarımları nasıl değiştirilir?
+===========
+
+Dinamik olarak oluşturulan form elemanları sizin mevcut tasarımınıza uymuyorsa bunu sınıfı başlatırken değiştirebilirsiniz. Değiştirirken kullanacağınız üç anahtar kelime şunlardır;
+{text}, {form}, {desc}
+
+```
+<?php
+$input = "<div class='input_yeni'>
+   <label>
+      {text}<br />
+      {form}<br />
+      <p>{desc}</p>
+   </label>
+</div>";
+$form = new DynamicForm([
+   'path' => realpath('.'),
+   'variable' => 'ayarlar',
+   'file' => 'ayarlar.php',
+   'input' => $input // input tasarımı değişti
+]);
+```
+
+Bunu select ve textarea içinde anahtar değerleri select ve textarea olarak şekilde yapabilirsiniz.
